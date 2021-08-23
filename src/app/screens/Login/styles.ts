@@ -5,13 +5,20 @@ export default (props: ConfigEntity) => {
   return StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: props.backgroundScreens,
+      // justifyContent: 'space-between',
+      backgroundColor: props.backgroundScreens
     },
-    descriptionText: {
-      paddingHorizontal: 20,
-      color: props.textSecondary,
+    textInput: {
+      // flex: 1, 
+      backgroundColor: 'transparent', 
+      // fontWeight: 'bold',
+      // height: 50
+    },
+    errorText: {
       fontSize: 12,
-      textAlign: 'center',
+      marginLeft: 30,
+      marginTop: 5,
+      color: props.error
     },
     button: {
       height: 50, 
@@ -19,17 +26,6 @@ export default (props: ConfigEntity) => {
       marginVertical: 30,
       justifyContent: 'center',
       backgroundColor: props.primaryButton
-    },
-    bottomView: {
-      paddingHorizontal: 10, 
-      justifyContent: 'space-between', 
-      alignItems: 'center'
-    },
-    errorText: {
-      fontSize: 12,
-      marginLeft: 30,
-      marginTop: 5,
-      color: props.error
     },
     loader: {
       position: 'absolute', 

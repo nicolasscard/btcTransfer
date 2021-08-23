@@ -1,3 +1,3 @@
-export {default as CreateAccount} from './CreateAccount/CreateAccount';
-export {default as Terms} from './Terms/Terms';
-export {default as LinkYourBank} from './LinkYourBank/LinkYourBank';
+export {default as Login} from './Login/Login';
+export {default as Movements} from './Movements/Movements';
+export {default as Home} from './Home/Home';

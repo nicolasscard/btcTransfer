@@ -14,6 +14,7 @@ module.exports = {
           '@navigation': './src/app/navigation',
           '@components': './src/@core/components',
           '@nativeModules': './src/@core/nativeModules',
+          '@reducers': './src/@core/reducers',
         }
       },
       require.resolve('react-native-reanimated/plugin'),

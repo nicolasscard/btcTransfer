@@ -34,7 +34,7 @@ export default () => {
   const [mode, setMode] = useState<string | null | undefined>(isDarkMode)
 
   const [configTheme, setConfigTheme] = useState<ConfigEntity>({
-    primary: '#17BFDD', 
+    primary: '#6d07e6', 
     secondary: '#F25FBB',
     gradientBlue: ["#00DCEC","#00B7D5"],
     gradientViolet: ["#8D24C4","#500F71"],
@@ -47,7 +47,7 @@ export default () => {
     textButtonPrimary: 'white',
     textButtonSecondary: '#7000AD',
     textInputTitle: '#D8D8D8',
-    textInputText: '#17BFDD',
+    textInputText: '#000000',
     card: 'white',
     error: '#FF0000',
     primaryButton: '#5FBA20',
