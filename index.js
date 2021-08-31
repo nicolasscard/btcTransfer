@@ -24,7 +24,6 @@
         >
           <App />
         </PersistGate>
-
      </Provider>
    );
  

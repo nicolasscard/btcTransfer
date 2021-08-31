@@ -1,4 +1,6 @@
 export const USER_LOADING = 'USER_LOADING';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const UPDATE_USERS_SUCCESS = 'UPDATE_USERS_SUCCESS';
 

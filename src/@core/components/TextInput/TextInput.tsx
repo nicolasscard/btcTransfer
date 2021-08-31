@@ -30,9 +30,9 @@ const TextInput: React.FC<Props> = (Props) => {
       secureTextEntry={Props.secureTextEntry}
       theme={{ 
         colors: { 
-          text: configTheme.primary, 
-          primary: configTheme.textSecondary, 
-          placeholder: configTheme.textInputTitle,
+          text: configTheme.textInputText, 
+          primary: configTheme.primary, 
+          placeholder: configTheme.textSecondary,
           error: configTheme.error
         },
       }}

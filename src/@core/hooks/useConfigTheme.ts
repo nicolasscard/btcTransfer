@@ -4,23 +4,18 @@ import { useColorScheme } from 'react-native';
 export interface ConfigEntity {
   primary: string;
   secondary: string;
-  gradientBlue: (string | number)[];
-  gradientViolet: (string | number)[];
   backgroundScreens: string;
   backgroundHeaders: string;
-  textLight: string;
-  textDark: string;
   textPrimary: string;
   textSecondary: string;
   textButtonPrimary: string;
   textButtonSecondary: string;
-  textInputTitle: string;
+  disabled: string;
   textInputText: string;
-  card: string;
   error: string;
+  success: string;
   primaryButton: string;
-  alingContentCenter?: Alings;
-  alingContentBetweenRow: Alings;
+  tabSecondary: string;
 }
 
 interface Alings {
@@ -35,30 +30,19 @@ export default () => {
 
   const [configTheme, setConfigTheme] = useState<ConfigEntity>({
     primary: '#6d07e6', 
-    secondary: '#F25FBB',
-    gradientBlue: ["#00DCEC","#00B7D5"],
-    gradientViolet: ["#8D24C4","#500F71"],
+    secondary: '#FFFFFF',
     backgroundScreens: '#FFFFFF',
     backgroundHeaders: '#202020',
-    textLight: 'white',
-    textDark: 'black',
     textPrimary: '#17BFDD',
     textSecondary: '#9C9C9C',
     textButtonPrimary: 'white',
-    textButtonSecondary: '#7000AD',
-    textInputTitle: '#D8D8D8',
+    textButtonSecondary: '#6d07e6',
     textInputText: '#000000',
-    card: 'white',
+    disabled: '#E3E3E3',
     error: '#FF0000',
-    primaryButton: '#5FBA20',
-    alingContentCenter: {
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    alingContentBetweenRow: {
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    },
+    success: '#009933',
+    primaryButton: '#6d07e6',
+    tabSecondary: '#9C9C9C',
   })
 
   useEffect(() => {

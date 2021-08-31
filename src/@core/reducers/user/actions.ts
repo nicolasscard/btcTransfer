@@ -1,53 +1,46 @@
 
 import {Dispatch} from 'redux';
-import { useDispatch, useSelector, connect, ConnectedProps } from 'react-redux';
 import {
   USER_LOADING,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
+  LOGOUT_SUCCESS
 } from './types';
 
-import { UserState } from './reducer';
+import { users } from './model';
 
-//Call ProfileManager to get confirm user data
-export const login = (user: UserState) => {
-  console.log('Login Action>> login >> user');
-  console.log(user);
+export const login = (user: { mail: string, password: string }) => {
   return (dispatch: Dispatch) => {
     dispatch({type: USER_LOADING});
 
-    if (false) {
-      dispatch({type: LOGIN_SUCCESS, payload: user});
+    const loggedUser = searchUser(user.mail, user.password);
+    if (loggedUser) {
+      dispatch({type: LOGIN_SUCCESS, payload: loggedUser});
     }
     else {
-      fail(dispatch, {message: 'Hubo un error inesperado'}, 'login', LOGIN_FAIL);
+      fail(dispatch, {message: 'Incorrect usre or password.'}, 'login', LOGIN_FAIL);
     }
-    // profileManager.getUserData(
-    //   (response: any) => {
-    //     if (response.success) {
-    //       dispatch({type: GET_CONFIRM_DATA_SUCCESS, payload: response.data});
-    //     } else {
-    //       fail(
-    //         dispatch,
-    //         {message: response.message},
-    //         'getUserData',
-    //         GET_CONFIRM_DATA_FAIL,
-    //       );
-    //     }
-    //   },
-    //   (error) => {
-    //     fail(dispatch, error, 'getUserData', GET_CONFIRM_DATA_FAIL);
-    //   },
-    // );
   };
 };
 
-export const fail = (
-  dispatch: any,
-  error: any,
-  method: string,
-  type: string,
-) => {
+export const logout = () => {
+  return (dispatch: Dispatch) => {
+    dispatch({type: LOGOUT_SUCCESS});
+  };
+};
+
+
+const searchUser = (mail: string, password: string) => {
+  for (let i = 0; i < users.length; i++) {
+    const element = users[i];
+    if (mail == element.mail && password == element.password) {
+      return element;
+    }
+  }
+  return null;
+}
+
+export const fail = (dispatch: any, error: any, method: string, type: string) => {
   console.log('Error in ' + method + ': ', error);
   if (error.message.trim() != '') {
     dispatch({type, payload: error.message});

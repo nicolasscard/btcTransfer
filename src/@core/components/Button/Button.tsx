@@ -11,8 +11,7 @@ interface Props {
 const Button: React.FC<Props> = (Props) => {
   const { configTheme } = useConfigTheme();
   const styles = useStyles(configTheme);
-  console.log('button props')
-  console.log(Props)
+
   return (
     <View style={styles.container}>
          {Props.children}

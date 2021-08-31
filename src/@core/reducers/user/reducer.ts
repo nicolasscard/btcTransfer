@@ -2,20 +2,29 @@ import {
   USER_LOADING,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
+  LOGOUT_SUCCESS,
+  UPDATE_USERS_SUCCESS
 } from './types';
 
+import { users } from './model';
+import { UserData } from './model';
+
 export type UserState = {
-  mail: string;
-  password: string;
+  loggedUser: UserData | null;
+  users: UserData[];
+
   userError: string;
   userLoading: boolean;
+  userSuccess: boolean;
 }
 
 const initialState: UserState = {
-  mail: '',
-  password: '',
+  users: users,
+  loggedUser: null,
+
   userError: '',
-  userLoading: false
+  userLoading: false,
+  userSuccess: false
 };
 
 const userReducer = (
@@ -30,21 +39,39 @@ const userReducer = (
       return {
         ...state,
         userLoading: true,
-        userError: '',       
+        userError: '',
+        userSuccess: false,       
       };
     case LOGIN_SUCCESS:
       return {
         ...state,
-        mail: action.payload.mail,
-        password: action.payload.password,
+        loggedUser: action.payload,
         userLoading: false,
-        userError: '',     
+        userError: '',
+        userSuccess: true,     
       };
     case LOGIN_FAIL:
       return {
         ...state,
         userLoading: false,
         userError: action.payload,
+        userSuccess: false,  
+      };
+    case LOGOUT_SUCCESS:
+      return {
+        ...state,
+        loggedUser: null,
+        userLoading: false,
+        userError: '',
+        userSuccess: false,     
+      };    
+    case UPDATE_USERS_SUCCESS:
+      console.log('UPDATE_USERS_SUCCESS')
+      console.log(action.payload)
+      return {
+        ...state,
+       users: action.payload.users, 
+       loggedUser: action.payload.loggedUser, 
       };
     default:
       return state;

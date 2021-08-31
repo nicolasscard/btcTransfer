@@ -6,6 +6,7 @@ import useConfigTheme from '@hooks/useConfigTheme';
 import useStyles from './styles';
 
 import { TextInput } from '@components/index';
+import { UserData } from '@reducers/user/model';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { Button } from 'react-native-paper';
@@ -18,20 +19,23 @@ type RenderFieldProps = {
   placeholder: string,
   meta: { touched: boolean, error: string, warning: string },
   secureTextEntry: boolean,
-  keyboardType: KeyboardTypeOptions
+  keyboardType: KeyboardTypeOptions,
+  loggedUser: UserData | null,
+  fasterFee: number,
 }
 
- const validate = (values: { mail: string, password: string }) => {
-  let errors = {mail: '', password: '' };
-  if (!values.mail) {
-    errors.mail = 'Required';
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.mail)) {
-    errors.mail = 'Invalid email address'
+ const validate = (values: { btcAddress: string, btcAmount: string }, props: CustomProps) => {
+   const btcAmount = Math.abs(parseFloat(values.btcAmount));
+  let errors = {btcAddress: '', btcAmount: '' };
+  if (!values.btcAddress) {
+    errors.btcAddress = 'Required';
+  } else if (values.btcAddress.length != 34) {
+    errors.btcAddress = 'Must be exactly 34 characters'
   }
-  if (!values.password) {
-    errors.password = 'Required'
-  } else if (values.password.length < 4) {
-    errors.password = 'Must be at last 4 characters'
+  if (!values.btcAmount) {
+    errors.btcAmount = 'Required'
+  } else if (props.loggedUser && btcAmount >= (props.loggedUser.btcBalance - props.fasterFee)) {
+    errors.btcAmount = 'Insufficient balance'
   }
   return errors;
 }
@@ -68,34 +72,39 @@ const renderField = (Props: RenderFieldProps) => {
   );
 }
 
-const LoginForm: React.FC<InjectedFormProps> = (Props) => {
+type CustomProps = {
+  loggedUser: UserData | null,
+  fasterFee: number
+}
+
+const MovementForm: React.FC<InjectedFormProps<{}, CustomProps> & CustomProps> = (props) => {
   const { configTheme } = useConfigTheme();
   const styles = useStyles(configTheme);
      // get validators and submitting states from form
      const dispatch = useDispatch();
-     const isInvalidd = useSelector((state) => isInvalid('loginForm')(state));
-     const isSubmittingg = useSelector((state) => isSubmitting('loginForm')(state));
+     const isInvalidd = useSelector((state) => isInvalid('movementForm')(state));
+     const isSubmittingg = useSelector((state) => isSubmitting('movementForm')(state));
 
     return (
       <ScrollView style={{  flex: 1  }}>
           <Field
-            name='mail'
-            label='mail'
-            type='email'
+            name='btcAddress'
+            label='BTC Address'
             component={renderField}
-            placeholder={'email'}
-            keyboardType={'email-address'}
+            placeholder={'BTC Address'}
             />
           <Field
-            name='password'
-            label='password'
-            type='text'
+            name='btcAmount'
+            label='BTC Amount to send'
             component={renderField}
-            placeholder={'password'}
-            secureTextEntry={true}
-          />       
+            placeholder={'BTC Amount to send'}
+            keyboardType={'numeric'}
+          />
+          <Text style={{ paddingLeft: 15, paddingTop: 5, fontSize: 15 }}>
+            {`Network commission: ${props.fasterFee}`}
+          </Text>       
           <Button 
-            onPress={() => dispatch(submit('loginForm'))} 
+            onPress={() => dispatch(submit('movementForm'))} 
             style={{ 
               ...styles.primaryButton, 
               backgroundColor: isInvalidd || isSubmittingg ? configTheme.disabled : configTheme.primaryButton
@@ -104,15 +113,15 @@ const LoginForm: React.FC<InjectedFormProps> = (Props) => {
             loading={false}
             disabled={isInvalidd || isSubmittingg}
           >
-            Login
+            Send BTC
           </Button>
        </ScrollView>
     );
 }
 
 // export default Form;
-export default reduxForm({
-  form: 'loginForm', // a unique identifier for this form
+export default reduxForm<{}, CustomProps>({
+  form: 'movementForm', // a unique identifier for this form
   validate, // <--- validation function given to redux-form
   warn, // <--- warning function given to redux-form
-})(LoginForm)
+})(MovementForm)

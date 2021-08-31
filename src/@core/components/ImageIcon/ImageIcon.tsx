@@ -19,7 +19,7 @@ const ImageIcon: React.FC<Props> = (Props) => {
       source={Props.source}
       style={{ 
         ...styles.image, 
-        tintColor: Props.focus ? configTheme.textSecondary : configTheme.textInputTitle 
+        tintColor: Props.focus ? configTheme.textSecondary : configTheme.disabled 
       }}
     />
   );

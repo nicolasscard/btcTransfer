@@ -1,100 +1,96 @@
 import React, {useEffect } from 'react';
 import { View, Text, ImageSourcePropType, Image, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-// import { TextInput as Input } from 'react-native-paper';
-import { TextInput } from '@components/index';
-import LoginForm from './LoginForm';
-import useConfigTheme from '@hooks/useConfigTheme';
-import { Button } from 'react-native-paper';
-import useStyles from './styles';
-import { useDispatch, useSelector, connect, ConnectedProps } from 'react-redux';
-import {RootState} from '@reducers/store';
-import {UserState} from '@reducers/user/reducer';
-import Snackbar from 'react-native-snackbar';
+import {showMessage} from 'react-native-flash-message';
 
-import { submit, isInvalid, isSubmitting } from 'redux-form';
-
+import { connect, ConnectedProps } from 'react-redux';
+import {UserData} from '@reducers/user/model';
 import { login } from '@reducers/user/actions';
 
-interface ComponentProps {
-  navigation: any;
-}
+import { Props as StackComponentProps} from '@navigation/root.navigation';
+import LoginForm from './LoginForm';
+
+import useConfigTheme from '@hooks/useConfigTheme';
+import useStyles from './styles';
 
 const welcome: ImageSourcePropType = require("@assets/media/welcome.png");
 
 const mapStateToProps = (state: any) => {
   return {
+    loggedUser: state.user.loggedUser,
     loading: state.user.userLoading,
-    error: state.user.userError
+    error: state.user.userError,
+    userSuccess: state.user.userSuccess
   };
 };
 
-
 const mapDispatchToProps = (dispatch: any) => ({
-  login: (user: UserState) => dispatch(login(user)),
+  login: (user: UserData) => dispatch(login(user)),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type reduxProps = ConnectedProps<typeof connector>;
-type Props = reduxProps & ComponentProps;
+type Props = reduxProps & StackComponentProps;
 
 const Login: React.FC<Props> = (props) => {
   const { configTheme } = useConfigTheme();
   const styles = useStyles(configTheme);
 
-  // console.log('login >> props')
-  // console.log(props.loading)
-  // console.log(props.error)
 
   useEffect(() => { 
     if (props.error != '') {
-      console.log('error')
-      console.log(props.error)
-
-      Snackbar.show({
-        text: props.error,
-        duration: Snackbar.LENGTH_SHORT,
+      showMessage({
+        message: props.error,
+        type: 'danger',
+        icon: 'danger',
+        style: {backgroundColor: configTheme.error},
       });
     }
-  }, [props.error]);
-  
-  // const loading = useSelector((state: RootState) => state.user.userLoading);
-  // const error = useSelector((state: RootState) => state.user.userError);
-  // const user = useSelector((state: RootState) => state.user);
-  // const dispatch = useDispatch();
+
+    if (props.userSuccess) {
+      showMessage({
+        message: 'Login Success',
+        type: 'success',
+        icon: 'success',
+        style: {backgroundColor: configTheme.success},
+      });
+      props.navigation.navigate('Tabs');
+    }
+  }, [props]);
+
 
   const onSubmit = async (values: any) => {
-    console.log('Login Screen >> onSubmit >> values');
-    console.log(values);
-    // await dispatch(login(values));
     await props.login(values);
   };
 
   return (
     <SafeAreaView style={styles.container}>
+    {/* <View style={styles.container}> */}
 
-      <View style={{flex: 0.75, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
+      <View style={styles.welcomeView}>
         <Image
           source={welcome}
-          style={{  width: 200, height: 200 }}
+          style={{  width: 180, height: 180 }}
         />
-        <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>
+        <Text style={styles.titleText}>
           Bienvenid@ a Ripio
         </Text>
       </View>
-      <View style={{ flexGrow: 1,  backgroundColor: 'white', paddingHorizontal: 15 }}>
+
+      <View style={styles.formView}>
         <LoginForm onSubmit={onSubmit} />
       </View>
+
       {props.loading &&
         <ActivityIndicator 
-        size="large" 
-        color={configTheme.primary} 
-        // style={styles.loader}
+          size="large" 
+          color={configTheme.primary} 
+          style={styles.loader}
         />
       }
+    {/* </View> */}
     </SafeAreaView>
-  )
+  );
 }
 
-// export default Login;
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
