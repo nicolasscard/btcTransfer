@@ -22,77 +22,63 @@ export const sendBTC = (btcAddress: string, btcAmount: number ) => {
     let {lastMovementIdAvailable, movements} = store.getState().movement;
     let {loggedUser, users} = store.getState().user;
     
-    const duIndex = getUserIndexByAddress(btcAddress, users);
+    // create new movement
+    let movement: Movement = { 
+      movementId: lastMovementIdAvailable,
+      originUserId: loggedUser?.userId ?? null,
+      destinationUserId: null,
+      destinationAddress: btcAddress,
+      btcAmount: btcAmount,
+      date: new Date(),
+      status: Status.Pending,
+    }
+    
+    const duIndex = getUserIndexByAddress(btcAddress, users, loggedUser?.userId);
     if (duIndex) {
       console.log('hay duIndex')
       console.log(duIndex)
+
       // Update movements
-      const movement: Movement = { 
-        movementId: lastMovementIdAvailable,
-        originUserId: loggedUser ? loggedUser?.userId : 0,
-        destinationUserId: users[duIndex].userId,
-        destinationAddress: users[duIndex].btcAddress,
-        btcAmount: btcAmount,
-        date: new Date(),
-        status: Status.Success,
-      }
-      movements.push(movement);
+      movement.destinationUserId = users[duIndex].userId;
+
+      
       
       // update destination user balance
       users[duIndex].btcBalance = users[duIndex].btcBalance + btcAmount;
       
       // update origin user balance
       if (loggedUser) {
-        console.log('hay loggedUser')
-        console.log(loggedUser)
-        const ouIndex = getUserIndexById(loggedUser.userId, users);
-        
-        console.log('ouIndex')
-        console.log(ouIndex)
-        if (ouIndex != null) {
-          console.log('hay ouIndex')
-          console.log(ouIndex)
-          users[ouIndex].btcBalance =  users[ouIndex].btcBalance - btcAmount;
-          loggedUser.btcBalance = loggedUser.btcBalance - btcAmount;
-          console.log('users')
-          console.log(users)
-          
-          dispatch({type: UPDATE_USERS_SUCCESS, payload: {users, loggedUser}});
-          dispatch({type: CREATE_MOVEMENT_SUCCESS, payload: movements});
-        }
-        else {
-          fail(dispatch, {message: 'Unexpected error2'}, 'sendBTC', CREATE_MOVEMENT_FAIL);
-        }
+        loggedUser.btcBalance = loggedUser.btcBalance - btcAmount;
+        users[loggedUser.userId].btcBalance = users[loggedUser.userId].btcBalance - btcAmount;
+
+        movement.status = Status.Success;
+        movements.push(movement);
+
+        dispatch({type: UPDATE_USERS_SUCCESS, payload: {users, loggedUser}});
+        dispatch({type: CREATE_MOVEMENT_SUCCESS, payload: movements});
       }
       else {
-        fail(dispatch, {message: 'Unexpected error'}, 'sendBTC', CREATE_MOVEMENT_FAIL);
+        movement.status = Status.Failed;
+        movements.push(movement);
+
+        dispatch({type: CREATE_MOVEMENT_FAIL, payload: {movements, error: 'Unexpected error'}});
+        // fail(dispatch, {message: 'Unexpected error'}, 'sendBTC', CREATE_MOVEMENT_FAIL);
       }
     }
     else {
-      fail(dispatch, {message: 'Non-existent destination address'}, 'sendBTC', CREATE_MOVEMENT_FAIL);
+      movement.status = Status.Failed;
+      movements.push(movement);
+
+      dispatch({type: CREATE_MOVEMENT_FAIL, payload: {movements, error: 'Invalid or non-existent destination address'}});
+      // fail(dispatch, {message: 'Non-existent destination address'}, 'sendBTC', CREATE_MOVEMENT_FAIL);
     }
   };
 };
 
-const getUserIndexByAddress = (btcAddress: string, users: UserData[]) => {
+const getUserIndexByAddress = (btcAddress: string, users: UserData[], loggedUserId: number | undefined) => {
   for (let i = 0; i < users.length; i++) {
     const user = users[i];
-    if (user.btcAddress == btcAddress) {
-      return i;
-    }
-  }
-  return null;
-}
-
-const getUserIndexById = (userId: number, users: UserData[]) => {
-  console.log('getUserIndexById')
-  for (let i = 0; i < users.length; i++) {
-    const user = users[i];
-    console.log(user.userId)
-    console.log(userId)
-    console.log('---')
-    if (user.userId == userId) {
-      console.log('íguales')
+    if (user.btcAddress == btcAddress && user.userId != loggedUserId) {   // I can't use my own address
       return i;
     }
   }

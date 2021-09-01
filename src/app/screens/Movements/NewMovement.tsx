@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, ImageSourcePropType, Image, ActivityIndicator } from 'react-native';
+import { StackActions } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {showMessage} from 'react-native-flash-message';
 
@@ -14,7 +15,7 @@ import { UserState } from '@reducers/user/reducer';
 
 import MovementForm from './MovementForm';
 // import { Props as MovementStackParamList} from '@navigation/root.navigation';
-import { Props as StackComponentProps} from '@navigation/root.navigation';
+import { Props as StackComponentProps} from '@navigation/stack.navigation';
 
 import { Button } from 'react-native-paper';
 import useConfigTheme from '@hooks/useConfigTheme';
@@ -30,7 +31,7 @@ const mapStateToProps = (state: any) => {
   return {
     loggedUser, userLoading, userError, userSuccess,
     fasterFee, ratesLoading, ratesError, getFasterFeeSuccess,
-    movementLoading, movementError, createMovementSuccess
+    movementLoading, movementError, createMovementSuccess, 
   };
 };
 
@@ -50,7 +51,12 @@ const NewMovement: React.FC<Props> = (props) => {
 
   useEffect(() => { 
     props.getFasterFee();
-  }, []);  
+  }, []);    
+  
+  // useEffect(() => { 
+  //   console.log('Newmovement screen >> useEffect >> movements')
+  //   console.log(props.movements)
+  // });  
   
   useEffect(() => { 
     if (props.createMovementSuccess) {
@@ -59,21 +65,31 @@ const NewMovement: React.FC<Props> = (props) => {
         type: 'success',
         icon: 'success',
         style: {backgroundColor: configTheme.success},
+        duration: 2000
       });
       props.movementReset();
-      props.navigation.navigate('Movement');
+      // props.navigation.navigate('Movements');
+      // props.navigation.goBack();
+      
+      props.navigation.dispatch(
+        StackActions.replace('Tabs')
+      );
+
     }  
-  
+  }, [props.createMovementSuccess]);  
+
+  useEffect(() => { 
     if (props.movementError != '') {
       showMessage({
         message: props.movementError,
         type: 'danger',
         icon: 'danger',
         style: {backgroundColor: configTheme.error},
+        duration: 2500
       });
       props.movementReset();
     }
-  }, [props]);  
+  }, [props.movementError]);  
 
   const onSubmit = async (values: any) => {
     console.log('onSubmit')

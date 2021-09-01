@@ -1,9 +1,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { MenuProvider } from 'react-native-popup-menu';
 
-import RootNavigation from '@navigation/root.navigation';
+import StackNavigation from '@navigation/stack.navigation';
 
 import FlashMessage, {
   MessageComponentProps,
@@ -17,20 +16,19 @@ const App = () => {
       {...props}
       titleStyle={{paddingRight: 10}}
       textStyle={{paddingRight: 10}}
+      
     />
   );
 
   return (
     <SafeAreaProvider>
-      <MenuProvider>
         <NavigationContainer>
-          <RootNavigation />
+          <StackNavigation />
           <FlashMessage
             position="top"
             MessageComponent={myFlashMessageComponent}
           />
         </NavigationContainer>
-      </MenuProvider>
     </SafeAreaProvider>
   );
 };

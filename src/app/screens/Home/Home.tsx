@@ -6,7 +6,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { logout } from '@reducers/user/actions';
 import { getBTCprice, getUSDprice } from '@reducers/rates/actions';
 
-import { Props as StackComponentProps} from '@navigation/root.navigation';
+import { Props as StackComponentProps} from '@navigation/stack.navigation';
 // import { Props as TabComponentProps} from '@navigation/tabs.navigation';
 
 import { Button } from 'react-native-paper';
@@ -44,7 +44,7 @@ const Home: React.FC<Props> = (props) => {
   const { configTheme } = useConfigTheme();
   const styles = useStyles(configTheme);
 
-  const [loggedUser, setLoggedUser] = useState<UserData>(props.loggedUser);
+  
 
   useEffect(() => { 
     props.getBTCprice();
@@ -54,16 +54,16 @@ const Home: React.FC<Props> = (props) => {
   useEffect(() => { 
     console.log('home >> useEffect')
     console.log(props.loggedUser?.btcBalance)
-    console.log(loggedUser?.btcBalance)
+    // console.log(loggedUser?.btcBalance)
 
-    const unsubscribe = props.navigation.addListener('focus', () => {
-      console.log('focussssss');
-      console.log(props.loggedUser?.btcBalance)
-      setLoggedUser(props.loggedUser);
-    });
-    return unsubscribe;
+    // const unsubscribe = props.navigation.addListener('focus', () => {
+    //   console.log('focussssss');
+    //   console.log(props.loggedUser?.btcBalance)
+    //   setLoggedUser(props.loggedUser);
+    // });
+    // return unsubscribe;
     
-  }, [props]);  
+  }, [props.loggedUser]);  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -79,12 +79,20 @@ const Home: React.FC<Props> = (props) => {
         <View style={{ 
           flex: 1, justifyContent: 'center', paddingLeft: 20 }}>
       
-          <Text style={styles.btcAmountText}>
-            {loggedUser?.btcBalance + ' BTC'}
-          </Text>
-          <Text style={styles.arsAmountText}>
-            {'= $ ' + (loggedUser?.btcBalance * props.BTCprice * props.USDprice)}
-          </Text>
+          {props.loggedUser != null
+            ? (<>
+                <Text style={styles.btcAmountText}>
+                  {props.loggedUser.btcBalance + ' BTC'}
+                </Text>
+                <Text style={styles.arsAmountText}>
+                  {'= $ ' + (props.loggedUser.btcBalance * props.BTCprice * props.USDprice)}
+                </Text>
+              </>)
+            : <Text style={styles.arsAmountText}>
+                Loading...  
+              </Text>
+          }
+          
 
         </View>
       </View>
@@ -99,8 +107,8 @@ const Home: React.FC<Props> = (props) => {
 
       <Button 
         onPress={() => { 
-          props.logout();
           props.navigation.navigate('Login');
+          props.logout();
         }}
         style={styles.buttonWithBorder}
         labelStyle={{ fontSize: 12, color: configTheme.textButtonPrimary }}

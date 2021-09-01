@@ -6,9 +6,7 @@ export default (props: ConfigEntity) => {
     container: {
       flex: 1,
       backgroundColor: props.backgroundScreens,
-    },
-    balanceView: {
-      flexDirection: 'row',
+      padding: 20
     },
     headerText: {
       fontWeight: 'bold', 
@@ -16,35 +14,29 @@ export default (props: ConfigEntity) => {
       color: props.primary,
       paddingBottom: 30,
     },    
-    btcAmountText: {
-      fontSize: 35, 
-      color: props.secondary
+    rowView: {
+      flex: 1, 
+      flexDirection: 'row', 
+      paddingVertical: 10,
+      // backgroundColor: 'orange',
+      justifyContent: 'space-between',
+      alignItems: 'center',
     },
-    arsAmountText: {
-      fontSize: 20, 
-      color: props.secondary
+    rowText: {
+      textAlign: 'center', 
+      fontSize: 17,
+      // backgroundColor: 'green',
     },
-    primaryButton: {
-      height: 50, 
-      width: '100%', 
-      marginVertical: 30,
-      justifyContent: 'center',
-      backgroundColor: props.primaryButton,
-      borderRadius: 40
+    headerRowText: {
+      textAlign: 'center', 
+      fontSize: 17,
+      fontWeight: 'bold'
     },
-    buttonWithBorder: {
-      height: 37, 
-      width: '100%', 
-      justifyContent: 'center',
-      backgroundColor: props.primary,
-      borderRadius: 12.5,
-      borderColor: props.secondary,
-      borderWidth: 2
-    },
-    image: {
-      width: 90, 
-      height: 90, 
-      tintColor: props.secondary
+    icon: {
+      flex: 0.05, 
+      textAlign: 'right', 
+      // textAlign: 'center', 
+      // backgroundColor: 'yellow'
     },
     loader: {
       position: 'absolute', 
@@ -60,6 +52,18 @@ export default (props: ConfigEntity) => {
       marginLeft: 30,
       marginTop: 5,
       color: props.error
+    },
+    arsAmountText: {
+      fontSize: 20, 
+      color: props.secondary
+    },
+    primaryButton: {
+      height: 50, 
+      width: '100%', 
+      marginVertical: 30,
+      justifyContent: 'center',
+      backgroundColor: props.primaryButton,
+      borderRadius: 40
     },
   })
 }

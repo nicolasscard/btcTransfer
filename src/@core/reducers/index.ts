@@ -25,7 +25,7 @@ const ratesPersistConfig = {
 const movementPersistConfig = {
   key: 'movementReducer',
   storage: AsyncStorage,
-  whitelist: [],
+  whitelist: ['movements'],
 };
 
 const formPersistConfig = {

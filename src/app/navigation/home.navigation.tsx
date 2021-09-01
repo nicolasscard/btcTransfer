@@ -4,7 +4,7 @@ import { RouteProp } from '@react-navigation/native';
 import { Movements, NewMovement, Home } from '@screens/index';
 
 import { connect, ConnectedProps } from 'react-redux';
-import {RootStackParamList} from './root.navigation';
+import {RootStackParamList} from './stack.navigation';
 
 /**
  * Specifying undefined means that the route doesn't have params. 
@@ -26,7 +26,6 @@ export type Props = {
 
 const mapStateToProps = (state: any) => {
   return {
-    loggedUser: state.user.loggedUser,
     error: state.user.userError,
     success: state.user.success
   };

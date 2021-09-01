@@ -7,7 +7,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import {UserData} from '@reducers/user/model';
 import { login } from '@reducers/user/actions';
 
-import { Props as StackComponentProps} from '@navigation/root.navigation';
+import { Props as StackComponentProps} from '@navigation/stack.navigation';
 import LoginForm from './LoginForm';
 
 import useConfigTheme from '@hooks/useConfigTheme';
@@ -17,7 +17,6 @@ const welcome: ImageSourcePropType = require("@assets/media/welcome.png");
 
 const mapStateToProps = (state: any) => {
   return {
-    loggedUser: state.user.loggedUser,
     loading: state.user.userLoading,
     error: state.user.userError,
     userSuccess: state.user.userSuccess
@@ -44,6 +43,7 @@ const Login: React.FC<Props> = (props) => {
         type: 'danger',
         icon: 'danger',
         style: {backgroundColor: configTheme.error},
+        duration: 2000
       });
     }
 
@@ -53,6 +53,7 @@ const Login: React.FC<Props> = (props) => {
         type: 'success',
         icon: 'success',
         style: {backgroundColor: configTheme.success},
+        duration: 2000
       });
       props.navigation.navigate('Tabs');
     }

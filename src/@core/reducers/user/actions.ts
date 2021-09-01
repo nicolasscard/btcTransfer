@@ -6,14 +6,14 @@ import {
   LOGIN_FAIL,
   LOGOUT_SUCCESS
 } from './types';
-
-import { users } from './model';
+import {store} from '@reducers/store';
+// import { users } from './model';
 
 export const login = (user: { mail: string, password: string }) => {
   return (dispatch: Dispatch) => {
     dispatch({type: USER_LOADING});
-
-    const loggedUser = searchUser(user.mail, user.password);
+    
+    const loggedUser = getUserIndexByCredentials(user.mail, user.password);
     if (loggedUser) {
       dispatch({type: LOGIN_SUCCESS, payload: loggedUser});
     }
@@ -30,7 +30,9 @@ export const logout = () => {
 };
 
 
-const searchUser = (mail: string, password: string) => {
+const getUserIndexByCredentials = (mail: string, password: string) => {
+  let {users} = store.getState().user;
+
   for (let i = 0; i < users.length; i++) {
     const element = users[i];
     if (mail == element.mail && password == element.password) {

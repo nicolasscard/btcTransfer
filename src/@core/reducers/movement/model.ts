@@ -6,8 +6,8 @@ export enum Status {
 
 export type Movement = {
   movementId: number;
-  originUserId: number;
-  destinationUserId: number;
+  originUserId: number | null;
+  destinationUserId: number | null;
   destinationAddress: string;
   btcAmount: number;
   date: Date;

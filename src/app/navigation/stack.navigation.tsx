@@ -2,12 +2,12 @@ import React from 'react';
 import { View, Text, ImageSourcePropType, Image, Platform } from 'react-native';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { Login, Movements, NewMovement } from '@screens/index';
+import { Login, Movements, NewMovement, Home, Splash } from '@screens/index';
 
 import { connect, ConnectedProps } from 'react-redux';
 
 import TabsNavigation from './tabs.navigation';
-import MovementNavigation from './movement.navigation';
+// import MovementNavigation from './movement.navigation';
 
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
 
@@ -23,9 +23,10 @@ import useConfigTheme from '@hooks/useConfigTheme';
   Login: undefined
   Tabs: undefined
   Home: undefined
-  Movement: {type: string} | undefined
+  // Movement: {type: string} | undefined
   Movements: undefined
   NewMovement: undefined
+  Splash: undefined
 };
 
 // Creatte a generic Props for all screen
@@ -39,7 +40,6 @@ export type Props = {
 
 const mapStateToProps = (state: any) => {
   return {
-    loggedUser: state.user.loggedUser,
     error: state.user.userError,
     success: state.user.success
   };
@@ -52,7 +52,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type reduxProps = ConnectedProps<typeof connector>;
 
-function RootNavigation(props: reduxProps & Props) {
+function StackNavigation() {
   // const { configTheme } = useConfigTheme();
 
   // function getHeaderTitle(route: any) {
@@ -75,14 +75,19 @@ function RootNavigation(props: reduxProps & Props) {
 
   return (
     <Stack.Navigator
-      initialRouteName={props.loggedUser ? 'Tabs' : 'Login'}
-      // initialRouteName={'Login'}
+      initialRouteName={'Splash'}
       screenOptions={({ navigation, route }) => ({
         headerShown: false
       })}
     >
       <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />     
       <Stack.Screen name="Tabs" component={TabsNavigation} />
+
+      {/* <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Movements" component={Movements} /> */}
+      <Stack.Screen name="NewMovement" component={NewMovement} />
+      <Stack.Screen name="Splash" component={Splash} />
+
         {/* // options={({ route }) => ({ 
         //   title: getHeaderTitle(route), 
           // header: ({ navigation }) =>  (
@@ -103,5 +108,5 @@ function RootNavigation(props: reduxProps & Props) {
 
 
 
-// export default StackNavigation;
-export default connect(mapStateToProps, mapDispatchToProps)(RootNavigation);
+export default StackNavigation;
+// export default connect(mapStateToProps, mapDispatchToProps)(StackNavigation);

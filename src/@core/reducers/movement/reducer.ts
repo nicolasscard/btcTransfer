@@ -41,6 +41,8 @@ const movementReducer = (
         createMovementSuccess: false,       
       };
     case CREATE_MOVEMENT_SUCCESS:
+      console.log('CREATE_MOVEMENT_SUCCESS')
+      console.log(action.payload)
       return {
         ...state,
         movements: action.payload,
@@ -52,13 +54,18 @@ const movementReducer = (
     case CREATE_MOVEMENT_FAIL:
       return {
         ...state,
+        movements: action.payload.movements,
+        lastMovementIdAvailable: state.lastMovementIdAvailable + 1,
+        movementError: action.payload.error,
         movementLoading: false,
-        movementError: action.payload,
-        createMovementSuccess: false,  
+        createMovementSuccess: true,  
       };
       case RESET:
         return {
-          ...initialState
+          ...state,
+          movementError: '',
+          movementLoading: false,
+          createMovementSuccess: false
         };
     default:
       return state;
