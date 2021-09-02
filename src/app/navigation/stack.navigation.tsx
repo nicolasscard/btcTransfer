@@ -1,19 +1,9 @@
 import React from 'react';
-import { View, Text, ImageSourcePropType, Image, Platform } from 'react-native';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { Login, Movements, NewMovement, Home, Splash } from '@screens/index';
-
-import { connect, ConnectedProps } from 'react-redux';
-
+import { Login, NewMovement, Splash, MovementDetail } from '@screens/index';
 import TabsNavigation from './tabs.navigation';
-// import MovementNavigation from './movement.navigation';
-
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
-
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
-import useConfigTheme from '@hooks/useConfigTheme';
+import {Movement} from '@reducers/movement/model';
 
 /**
  * Specifying undefined means that the route doesn't have params. 
@@ -23,9 +13,9 @@ import useConfigTheme from '@hooks/useConfigTheme';
   Login: undefined
   Tabs: undefined
   Home: undefined
-  // Movement: {type: string} | undefined
   Movements: undefined
   NewMovement: undefined
+  MovementDetail: {movement: Movement}
   Splash: undefined
 };
 
@@ -38,40 +28,7 @@ export type Props = {
   route: RouteProp<RootStackParamList, typeof screenName>;
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    error: state.user.userError,
-    success: state.user.success
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => ({
-});
-
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type reduxProps = ConnectedProps<typeof connector>;
-
 function StackNavigation() {
-  // const { configTheme } = useConfigTheme();
-
-  // function getHeaderTitle(route: any) {
-  //   // If the focused route is not found, we need to assume it's the initial screen
-  //   // This can happen during if there hasn't been any navigation inside the screen
-  //   // In our case, it's "Feed" as that's the first screen inside the navigator
-  //   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
-  
-  //   switch (routeName) {
-  //     case 'Home':
-  //       return 'Home';
-  //     case 'Movement':
-  //       return 'Movement';
-  //     // case 'Movements':
-  //     //   return 'Movements';
-  //     // case 'NewMovement':
-  //     //   return 'NewMovement';
-  //   }
-  // }
 
   return (
     <Stack.Navigator
@@ -82,25 +39,9 @@ function StackNavigation() {
     >
       <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />     
       <Stack.Screen name="Tabs" component={TabsNavigation} />
-
-      {/* <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Movements" component={Movements} /> */}
       <Stack.Screen name="NewMovement" component={NewMovement} />
-      <Stack.Screen name="Splash" component={Splash} />
-
-        {/* // options={({ route }) => ({ 
-        //   title: getHeaderTitle(route), 
-          // header: ({ navigation }) =>  (
-          //     <View style={{ backgroundColor: 'red', height: 150 }}>
-          //     {Platform.OS == 'ios'
-          //     ? <MaterialIcons name="arrow-back-ios" color={configTheme.primary} size={20} onPress={() => navigation.goBack()} />
-          //     : <MaterialIcons name="arrow-back" color={configTheme.primary} size={20} onPress={() => navigation.goBack()} />
-          //     }
-          //   </View> ),  
-          
-          
-        // })} />      */}
-      
+      <Stack.Screen name="Splash" component={Splash} />     
+      <Stack.Screen name="MovementDetail" component={MovementDetail} />     
 
     </Stack.Navigator>
   );
@@ -109,4 +50,3 @@ function StackNavigation() {
 
 
 export default StackNavigation;
-// export default connect(mapStateToProps, mapDispatchToProps)(StackNavigation);

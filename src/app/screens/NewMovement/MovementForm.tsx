@@ -86,7 +86,7 @@ const MovementForm: React.FC<InjectedFormProps<{}, CustomProps> & CustomProps> =
      const isSubmittingg = useSelector((state) => isSubmitting('movementForm')(state));
 
     return (
-      <ScrollView style={{  flex: 1  }}>
+      <ScrollView style={{ flex: 1 }}>
           <Field
             name='btcAddress'
             label='BTC Address'

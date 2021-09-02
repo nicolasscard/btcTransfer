@@ -1,12 +1,12 @@
 import React, {useEffect, useState } from 'react';
-import { View, Text, ImageSourcePropType, Image, FlatList, RefreshControl } from 'react-native';
+import { View, Text, ImageSourcePropType, Image, FlatList, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {Status} from '@reducers/movement/model';
 
 import { connect, ConnectedProps } from 'react-redux';
 import { logout } from '@reducers/user/actions';
-
+import {Header} from '@components/index';
 import { Props as StackComponentProps} from '@navigation/stack.navigation';
 // import { Props as TabComponentProps} from '@navigation/tabs.navigation';
 
@@ -53,12 +53,16 @@ const Movements: React.FC<Props> = (props) => {
     console.log(item)
 
     return (
-      <View style={styles.rowView}>
+      <TouchableOpacity 
+        style={styles.rowView}  
+        onPress={() =>  { 
+          props.navigation.navigate('MovementDetail', { movement: item }) 
+        }}
+      >
         <Text style={{ flex: 0.2, ...styles.rowText}}>
           {`${item.date.getDate()}/${item.date.getMonth()}/${item.date.getFullYear()}`}
         </Text>
         <Text style={{ flex: 0.5, ...styles.rowText }}>
-          {/* {'1.00004554332'} */}
           {item.btcAmount}
         </Text>
         <Text style={{ flex: 0.2, ...styles.rowText, color: item.status == Status.Success ? 'green' : 'red' }}>
@@ -71,30 +75,31 @@ const Movements: React.FC<Props> = (props) => {
           size={25} 
         />
 
-      </View>
+      </TouchableOpacity>
     );
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.headerText}> {'Movements'} </Text>
-      {props.movements.length > 0
-        ? (<>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={{ flex: 0.2, ...styles.headerRowText }}> Date </Text>
-              <Text style={{ flex: 0.5, ...styles.headerRowText }}> Amount </Text>
-              <Text style={{ flex: 0.2, ...styles.headerRowText }}> Status </Text>
-              <View style={{ flex: 0.05 }} />
-            </View>
-          </>)
-        : <Text style={{ flex: 0.2, ...styles.headerRowText }}> No movements made yet </Text>
-      }
-      <FlatList
-        data={props.movements}
-        renderItem={(item) => renderItem(item.item)}
-        keyExtractor={(item) => item.movementId.toString()}
-      />
-     
+      <Header title='Movements' />
+      <View style={{ marginTop: 20 }}>
+        {props.movements.length > 0
+          ? (<>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={{ flex: 0.2, ...styles.headerRowText }}> Date </Text>
+                <Text style={{ flex: 0.5, ...styles.headerRowText }}> Amount </Text>
+                <Text style={{ flex: 0.2, ...styles.headerRowText }}> Status </Text>
+                <View style={{ flex: 0.05 }} />
+              </View>
+            </>)
+          : <Text style={{ flex: 0.2, ...styles.headerRowText }}> No movements made yet </Text>
+        }
+        <FlatList
+          data={props.movements}
+          renderItem={(item) => renderItem(item.item)}
+          keyExtractor={(item) => item.movementId.toString()}
+        />
+      </View>
     </SafeAreaView>
   );
 }

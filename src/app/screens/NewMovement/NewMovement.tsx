@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {showMessage} from 'react-native-flash-message';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import {Header} from '@components/index';
 import { connect, ConnectedProps } from 'react-redux';
 import { getFasterFee } from '@reducers/rates/actions';
 import { sendBTC, movementReset } from '@reducers/movement/actions';
@@ -99,26 +99,17 @@ const NewMovement: React.FC<Props> = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Ionicons 
-        name="chevron-back" 
-        color={configTheme.primary} 
-        size={30} 
-        style={{ paddingLeft: 15, backgroundColor: 'white'}} 
-        onPress={() => props.navigation.goBack()} 
+      <Header 
+        title='Sending Bitcoins' 
+        back={() => props.navigation.goBack()}
       />
-      <View style={{ ...styles.container, padding: 25}}>
-        <Text style={styles.headerText}>
-          {'Sending Bitcoins'}
-        </Text>
-
-        <View style={{ flexGrow: 1, paddingVertical: 25 }}>
-          <MovementForm 
-            onSubmit={onSubmit} 
-            loggedUser={props.loggedUser} 
-            fasterFee={props.fasterFee} 
-          />
-        </View>
-
+     
+      <View style={{ ...styles.container, padding: 20}}>
+        <MovementForm 
+          onSubmit={onSubmit} 
+          loggedUser={props.loggedUser} 
+          fasterFee={props.fasterFee} 
+        />
       </View>
       {props.movementLoading &&
         <ActivityIndicator 

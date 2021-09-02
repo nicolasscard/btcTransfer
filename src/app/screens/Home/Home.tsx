@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ImageSourcePropType, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import {Header} from '@components/index';
 import { connect, ConnectedProps } from 'react-redux';
 import { logout } from '@reducers/user/actions';
 import { getBTCprice, getUSDprice } from '@reducers/rates/actions';
@@ -67,10 +67,7 @@ const Home: React.FC<Props> = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-
-      <Text style={styles.headerText}>
-        {'My Balance'}
-      </Text>
+      <Header title='My Balance' />
       <View style={styles.balanceView}>
         <Image
           source={btcCoin}
@@ -99,8 +96,8 @@ const Home: React.FC<Props> = (props) => {
 
       <Button 
         onPress={() => { props.navigation.navigate('NewMovement'); }}
-        style={{ ...styles.primaryButton, backgroundColor: configTheme.secondary }}
-        labelStyle={{ fontSize: 12, color: configTheme.textButtonSecondary }}
+        style={{ ...styles.primaryButton }}
+        labelStyle={{ fontSize: 12, color: configTheme.textButtonPrimary }}
       >
         Send BTC
       </Button>
@@ -111,7 +108,7 @@ const Home: React.FC<Props> = (props) => {
           props.logout();
         }}
         style={styles.buttonWithBorder}
-        labelStyle={{ fontSize: 12, color: configTheme.textButtonPrimary }}
+        labelStyle={{ fontSize: 12, color: configTheme.textButtonSecondary }}
         disabled={false}
       >
         Log Out

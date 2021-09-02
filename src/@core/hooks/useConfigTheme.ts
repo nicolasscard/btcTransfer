@@ -16,6 +16,7 @@ export interface ConfigEntity {
   success: string;
   primaryButton: string;
   tabSecondary: string;
+  money: string;
 }
 
 interface Alings {
@@ -43,6 +44,7 @@ export default () => {
     success: '#009933',
     primaryButton: '#6d07e6',
     tabSecondary: '#9C9C9C',
+    money: '#F9D480'
   })
 
   useEffect(() => {
