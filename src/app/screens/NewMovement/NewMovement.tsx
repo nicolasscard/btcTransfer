@@ -1,27 +1,22 @@
 import React, { useEffect } from 'react';
-import { View, Text, ImageSourcePropType, Image, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { StackActions } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {showMessage} from 'react-native-flash-message';
-
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Header} from '@components/index';
 import { connect, ConnectedProps } from 'react-redux';
-import { getFasterFee } from '@reducers/rates/actions';
-import { sendBTC, movementReset } from '@reducers/movement/actions';
-import { MovementState } from '@reducers/movement/reducer';
-import { RatesState } from '@reducers/rates/reducer';
-import { UserState } from '@reducers/user/reducer';
-
-import MovementForm from './MovementForm';
-// import { Props as MovementStackParamList} from '@navigation/root.navigation';
 import { Props as StackComponentProps} from '@navigation/stack.navigation';
 
-import { Button } from 'react-native-paper';
+import {Header} from '@components/index';
+import MovementForm from './MovementForm';
+
+import { getFasterFee } from '@reducers/rates/actions';
+import { RatesState } from '@reducers/rates/reducer';
+import { sendBTC, movementReset } from '@reducers/movement/actions';
+import { MovementState } from '@reducers/movement/reducer';
+import { UserState } from '@reducers/user/reducer';
+
 import useConfigTheme from '@hooks/useConfigTheme';
 import useStyles from './styles';
-
-const btcCoin: ImageSourcePropType = require("@assets/media/btcCoin.png");
 
 const mapStateToProps = (state: any) => {
   const { loggedUser, userLoading, userError, userSuccess }: UserState = state.user;
@@ -53,11 +48,6 @@ const NewMovement: React.FC<Props> = (props) => {
     props.getFasterFee();
   }, []);    
   
-  // useEffect(() => { 
-  //   console.log('Newmovement screen >> useEffect >> movements')
-  //   console.log(props.movements)
-  // });  
-  
   useEffect(() => { 
     if (props.createMovementSuccess) {
       showMessage({
@@ -67,14 +57,10 @@ const NewMovement: React.FC<Props> = (props) => {
         style: {backgroundColor: configTheme.success},
         duration: 2000
       });
-      props.movementReset();
-      // props.navigation.navigate('Movements');
-      // props.navigation.goBack();
-      
+      props.movementReset();      
       props.navigation.dispatch(
         StackActions.replace('Tabs')
       );
-
     }  
   }, [props.createMovementSuccess]);  
 
@@ -92,8 +78,6 @@ const NewMovement: React.FC<Props> = (props) => {
   }, [props.movementError]);  
 
   const onSubmit = async (values: any) => {
-    console.log('onSubmit')
-    console.log(values)
     await props.sendBTC(values.btcAddress, values.btcAmount);
   };
 
@@ -104,7 +88,7 @@ const NewMovement: React.FC<Props> = (props) => {
         back={() => props.navigation.goBack()}
       />
      
-      <View style={{ ...styles.container, padding: 20}}>
+      <View style={{ ...styles.container, padding: configTheme.margin}}>
         <MovementForm 
           onSubmit={onSubmit} 
           loggedUser={props.loggedUser} 

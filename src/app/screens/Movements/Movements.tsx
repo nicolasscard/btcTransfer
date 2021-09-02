@@ -1,28 +1,19 @@
-import React, {useEffect, useState } from 'react';
-import { View, Text, ImageSourcePropType, Image, FlatList, TouchableHighlight, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { connect, ConnectedProps } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {Status} from '@reducers/movement/model';
 
-import { connect, ConnectedProps } from 'react-redux';
-import { logout } from '@reducers/user/actions';
-import {Header} from '@components/index';
 import { Props as StackComponentProps} from '@navigation/stack.navigation';
-// import { Props as TabComponentProps} from '@navigation/tabs.navigation';
+import {Status, Movement} from '@reducers/movement/model';
+import {Header} from '@components/index';
 
-import { Button } from 'react-native-paper';
-import { Movement } from '@reducers/movement/model';
 import useConfigTheme from '@hooks/useConfigTheme';
 import useStyles from './styles';
-import { MovementState } from '@reducers/movement/reducer';
-
-const btcCoin: ImageSourcePropType = require("@assets/media/btcCoin.png");
 
 const mapStateToProps = (state: any) => {
-  const { movements }: MovementState = state.movement;
-
-  return {
-    movements
+  return { 
+    movements: state.movement.movements
   };
 };
 
@@ -32,32 +23,16 @@ const mapDispatchToProps = (dispatch: any) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type reduxProps = ConnectedProps<typeof connector>;
 type Props = reduxProps & StackComponentProps;
-// type Props = reduxProps & TabComponentProps;
 
 const Movements: React.FC<Props> = (props) => {
   const { configTheme } = useConfigTheme();
   const styles = useStyles(configTheme);
 
-  const [loading, setLoading] = useState<boolean>(false);
-
-  console.log('movement screen prop')
-  console.log(props.movements)
-
-  useEffect(() => { 
-    console.log('movements screen >> useEffects >> props.movements')
-    console.log(props.movements)
-  }, [props.movements]); 
-
   const renderItem = (item: Movement) => {
-    console.log('renderItem')
-    console.log(item)
-
     return (
       <TouchableOpacity 
         style={styles.rowView}  
-        onPress={() =>  { 
-          props.navigation.navigate('MovementDetail', { movement: item }) 
-        }}
+        onPress={() =>  props.navigation.navigate('MovementDetail', { movementId: item.movementId })}
       >
         <Text style={{ flex: 0.2, ...styles.rowText}}>
           {`${item.date.getDate()}/${item.date.getMonth()}/${item.date.getFullYear()}`}
@@ -74,7 +49,6 @@ const Movements: React.FC<Props> = (props) => {
           color={configTheme.primary} 
           size={25} 
         />
-
       </TouchableOpacity>
     );
   }
@@ -82,7 +56,7 @@ const Movements: React.FC<Props> = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header title='Movements' />
-      <View style={{ marginTop: 20 }}>
+      <View style={{ marginTop: configTheme.margin }}>
         {props.movements.length > 0
           ? (<>
               <View style={{ flexDirection: 'row' }}>
@@ -92,7 +66,7 @@ const Movements: React.FC<Props> = (props) => {
                 <View style={{ flex: 0.05 }} />
               </View>
             </>)
-          : <Text style={{ flex: 0.2, ...styles.headerRowText }}> No movements made yet </Text>
+          : <Text style={{ ...styles.headerRowText }}> No movements made yet </Text>
         }
         <FlatList
           data={props.movements}

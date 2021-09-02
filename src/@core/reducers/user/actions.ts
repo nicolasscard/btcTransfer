@@ -1,13 +1,13 @@
 
 import {Dispatch} from 'redux';
+import {store} from '@reducers/store';
+
 import {
   USER_LOADING,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT_SUCCESS
 } from './types';
-import {store} from '@reducers/store';
-// import { users } from './model';
 
 export const login = (user: { mail: string, password: string }) => {
   return (dispatch: Dispatch) => {
@@ -28,7 +28,6 @@ export const logout = () => {
     dispatch({type: LOGOUT_SUCCESS});
   };
 };
-
 
 const getUserIndexByCredentials = (mail: string, password: string) => {
   let {users} = store.getState().user;

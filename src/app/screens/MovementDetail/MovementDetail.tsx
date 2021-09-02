@@ -1,27 +1,18 @@
 import React from 'react';
-import { View, Text, ImageSourcePropType, Image } from 'react-native';
+import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-import {Status} from '@reducers/movement/model';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect, ConnectedProps } from 'react-redux';
-import {Header} from '@components/index';
-
-
 import { Props as StackComponentProps} from '@navigation/stack.navigation';
 
-import { Movement } from '@reducers/movement/model';
+import {Status, Movement} from '@reducers/movement/model';
+import {Header} from '@components/index';
+
 import useConfigTheme from '@hooks/useConfigTheme';
 import useStyles from './styles';
-import { MovementState } from '@reducers/movement/reducer';
-
-const btcCoin: ImageSourcePropType = require("@assets/media/btcCoin.png");
 
 const mapStateToProps = (state: any) => {
-  const { movements }: MovementState = state.movement;
-
   return {
-    movements
+    movements: state.movement.movements
   };
 };
 
@@ -32,10 +23,10 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type reduxProps = ConnectedProps<typeof connector>;
 type Props = reduxProps & StackComponentProps;
 
-const MovementDetail: React.FC<Props> = (props: Props) => {
+const MovementDetail: React.FC<Props> = (props) => {
   const { configTheme } = useConfigTheme();
   const styles = useStyles(configTheme);
-
+  
   let movement: Movement = {
     movementId: 0,
     originUserId: 0,
@@ -47,7 +38,8 @@ const MovementDetail: React.FC<Props> = (props: Props) => {
   };
 
   if (props.route.params) {
-    movement = props.route.params.movement;
+    const movementId: number = props.route.params?.movementId;
+    movement = props.movements[movementId];
   }
 
   const renderRow = (label: string, value: string | number, isColumn: boolean) => {
@@ -63,8 +55,6 @@ const MovementDetail: React.FC<Props> = (props: Props) => {
     );
   }
 
-// back={() => props.navigation.goBack()}
-
   return (
     <SafeAreaView style={styles.container}>
       <Header 
@@ -72,16 +62,16 @@ const MovementDetail: React.FC<Props> = (props: Props) => {
         back={() => props.navigation.goBack()}
       />
 
-      <View style={{  paddingVertical: 25}}>
+      <View style={{  paddingVertical: configTheme.margin}}>
         {renderRow('Date', movement?.date.toLocaleString('es-AR'), false)}
         {renderRow('Amount', movement?.btcAmount + ' BTC', false)}
         {renderRow('Status', movement?.status, false)}
         {renderRow('Movement ID', movement?.movementId, false)}
         {renderRow('Destination Address', movement?.destinationAddress, true)}
       </View>
-     
     </SafeAreaView>
   );
 }
 
+// export default MovementDetail;
 export default connect(mapStateToProps, mapDispatchToProps)(MovementDetail);

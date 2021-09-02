@@ -6,18 +6,12 @@ export default (props: ConfigEntity) => {
     container: {
       flex: 1,
       backgroundColor: props.backgroundScreens,
-      padding: 25,
+      padding: props.margin,
     },
     balanceView: {
       flexDirection: 'row',
-      marginTop: 20
+      marginTop: props.margin
     },
-    headerText: {
-      fontWeight: 'bold', 
-      fontSize: 30, 
-      color: props.secondary,
-      paddingBottom: 30,
-    },    
     btcAmountText: {
       fontSize: 35, 
       color: props.textInputText
@@ -29,7 +23,7 @@ export default (props: ConfigEntity) => {
     primaryButton: {
       height: 50, 
       width: '100%', 
-      marginVertical: 30,
+      marginVertical: props.margin,
       justifyContent: 'center',
       backgroundColor: props.primaryButton,
       borderRadius: 40

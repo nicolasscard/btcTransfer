@@ -2,11 +2,10 @@ import React, {useEffect } from 'react';
 import { View, Text, ImageSourcePropType, Image, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {showMessage} from 'react-native-flash-message';
-
 import { connect, ConnectedProps } from 'react-redux';
+
 import {UserData} from '@reducers/user/model';
 import { login } from '@reducers/user/actions';
-
 import { Props as StackComponentProps} from '@navigation/stack.navigation';
 import LoginForm from './LoginForm';
 
@@ -35,7 +34,6 @@ const Login: React.FC<Props> = (props) => {
   const { configTheme } = useConfigTheme();
   const styles = useStyles(configTheme);
 
-
   useEffect(() => { 
     if (props.error != '') {
       showMessage({
@@ -46,7 +44,9 @@ const Login: React.FC<Props> = (props) => {
         duration: 2000
       });
     }
+  }, [props.error]);
 
+  useEffect(() => { 
     if (props.userSuccess) {
       showMessage({
         message: 'Login Success',
@@ -57,8 +57,7 @@ const Login: React.FC<Props> = (props) => {
       });
       props.navigation.navigate('Tabs');
     }
-  }, [props]);
-
+  }, [props.userSuccess]);
 
   const onSubmit = async (values: any) => {
     await props.login(values);
@@ -66,16 +65,12 @@ const Login: React.FC<Props> = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-    {/* <View style={styles.container}> */}
-
       <View style={styles.welcomeView}>
         <Image
           source={welcome}
           style={{  width: 180, height: 180 }}
         />
-        <Text style={styles.titleText}>
-          Bienvenid@ a Ripio
-        </Text>
+        <Text style={styles.titleText}> BTC Transfer </Text>
       </View>
 
       <View style={styles.formView}>
@@ -89,7 +84,6 @@ const Login: React.FC<Props> = (props) => {
           style={styles.loader}
         />
       }
-    {/* </View> */}
     </SafeAreaView>
   );
 }

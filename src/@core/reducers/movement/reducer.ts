@@ -1,11 +1,11 @@
+import { Movement } from './model';
+
 import {
   MOVEMENT_LOADING,
   CREATE_MOVEMENT_SUCCESS,
   CREATE_MOVEMENT_FAIL,
   RESET
 } from './types';
-
-import { Movement } from './model';
 
 export type MovementState = {
   movements: Movement[];
@@ -33,7 +33,6 @@ const movementReducer = (
 
   switch (type) {
     case MOVEMENT_LOADING:
-      console.log('redux >> loading');
       return {
         ...state,
         movementLoading: true,
@@ -41,8 +40,6 @@ const movementReducer = (
         createMovementSuccess: false,       
       };
     case CREATE_MOVEMENT_SUCCESS:
-      console.log('CREATE_MOVEMENT_SUCCESS')
-      console.log(action.payload)
       return {
         ...state,
         movements: action.payload,

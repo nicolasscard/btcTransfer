@@ -1,3 +1,7 @@
+
+import { users } from './model';
+import { UserData } from './model';
+
 import {
   USER_LOADING,
   LOGIN_SUCCESS,
@@ -5,9 +9,6 @@ import {
   LOGOUT_SUCCESS,
   UPDATE_USERS_SUCCESS
 } from './types';
-
-import { users } from './model';
-import { UserData } from './model';
 
 export type UserState = {
   loggedUser: UserData | null;
@@ -35,7 +36,6 @@ const userReducer = (
 
   switch (type) {
     case USER_LOADING:
-      console.log('loading...')
       return {
         ...state,
         userLoading: true,
@@ -66,8 +66,6 @@ const userReducer = (
         userSuccess: false,     
       };    
     case UPDATE_USERS_SUCCESS:
-      console.log('UPDATE_USERS_SUCCESS')
-      console.log(action.payload)
       return {
         ...state,
        users: action.payload.users, 

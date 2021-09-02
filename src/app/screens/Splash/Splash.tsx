@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Text, ImageSourcePropType, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Props as StackComponentProps} from '@navigation/stack.navigation';
+import { connect, ConnectedProps } from 'react-redux';
 
 import useConfigTheme from '@hooks/useConfigTheme';
-import { Props as StackComponentProps} from '@navigation/stack.navigation';
 import useStyles from './styles';
-import { connect, ConnectedProps } from 'react-redux';
 
 const splashImg: ImageSourcePropType = require("@assets/media/splash.png");
 
@@ -32,7 +32,6 @@ const Splash: React.FC<Props> = (props) => {
     }
     else {
       props.navigation.navigate('Login');
-
     }    
   }, [props.loggedUser]);  
   
@@ -46,7 +45,7 @@ const Splash: React.FC<Props> = (props) => {
         style={styles.image}
       />
     </SafeAreaView>
-  )
+  );
 }
 
 // export default Splash;

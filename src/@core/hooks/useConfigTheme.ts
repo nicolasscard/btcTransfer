@@ -17,11 +17,8 @@ export interface ConfigEntity {
   primaryButton: string;
   tabSecondary: string;
   money: string;
-}
-
-interface Alings {
-  justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around' | 'space-evenly';
-  alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline';
+  margin: number;
+  halfMargin: number;
 }
 
 export default () => {
@@ -33,7 +30,7 @@ export default () => {
     primary: '#6d07e6', 
     secondary: '#FFFFFF',
     backgroundScreens: '#FFFFFF',
-    backgroundHeaders: '#202020',
+    backgroundHeaders: '#6d07e6',
     textPrimary: '#17BFDD',
     textSecondary: '#9C9C9C',
     textButtonPrimary: 'white',
@@ -44,20 +41,14 @@ export default () => {
     success: '#009933',
     primaryButton: '#6d07e6',
     tabSecondary: '#9C9C9C',
-    money: '#F9D480'
+    money: '#F9D480',
+    margin: 20,
+    halfMargin: 10
   })
 
   useEffect(() => {
-    if (mode === 'dark') {
-      setConfigTheme({
-        ...configTheme,
-      })
-    } else {
-      setConfigTheme({
-        ...configTheme,
-      })
-    }
-  }, [mode])
+    setConfigTheme({ ...configTheme })
+  }, [])
 
   const setTheme = (theme: string) => setMode(theme);
 

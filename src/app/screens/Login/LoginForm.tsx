@@ -1,24 +1,22 @@
 import React from 'react';
 import { Text, View, KeyboardTypeOptions } from 'react-native';
-import { Field, reduxForm, InjectedFormProps } from 'redux-form';
+import { Field, reduxForm, InjectedFormProps, submit, isInvalid, isSubmitting } from 'redux-form';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Button } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
 
 import useConfigTheme from '@hooks/useConfigTheme';
 import useStyles from './styles';
 
 import { TextInput } from '@components/index';
-import { ScrollView } from 'react-native-gesture-handler';
-
-import { Button } from 'react-native-paper';
-import { submit, isInvalid, isSubmitting } from 'redux-form';
-
-import { useDispatch, useSelector } from 'react-redux';
 
 type RenderFieldProps = {
   input: Field,
   placeholder: string,
   meta: { touched: boolean, error: string, warning: string },
   secureTextEntry: boolean,
-  keyboardType: KeyboardTypeOptions
+  keyboardType: KeyboardTypeOptions,
+  showPassword: boolean
 }
 
  const validate = (values: { mail: string, password: string }) => {
@@ -42,7 +40,7 @@ const warn = (values: {}) => {
 }
 
 const renderField = (Props: RenderFieldProps) => {
-  const { input, placeholder, secureTextEntry, keyboardType, meta: { touched, error, warning } } = Props;
+  const { input, placeholder, secureTextEntry, keyboardType, showPassword, meta: { touched, error, warning } } = Props;
   
   const { configTheme } = useConfigTheme();
   const styles = useStyles(configTheme);
@@ -57,6 +55,7 @@ const renderField = (Props: RenderFieldProps) => {
         touched={touched}
         secureTextEntry={secureTextEntry}
         keyboardType={keyboardType}
+        showPassword={showPassword}
       />
 
       {touched && (
@@ -77,7 +76,7 @@ const LoginForm: React.FC<InjectedFormProps> = (Props) => {
      const isSubmittingg = useSelector((state) => isSubmitting('loginForm')(state));
 
     return (
-      <ScrollView style={{  flex: 1  }}>
+      <ScrollView style={{ flex: 1 }}>
           <Field
             name='mail'
             label='mail'
@@ -93,6 +92,7 @@ const LoginForm: React.FC<InjectedFormProps> = (Props) => {
             component={renderField}
             placeholder={'password'}
             secureTextEntry={true}
+            showPassword={true}
           />       
           <Button 
             onPress={() => dispatch(submit('loginForm'))} 

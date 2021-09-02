@@ -1,6 +1,8 @@
 
 import {Dispatch} from 'redux';
 import {store} from '@reducers/store';
+
+import { UserData } from '@reducers/user/model';
 import {Movement, Status} from './model';
 
 import {
@@ -9,11 +11,7 @@ import {
   CREATE_MOVEMENT_FAIL,
   RESET
 } from './types';
-
 import { UPDATE_USERS_SUCCESS } from '../user/types';
-
-import { UserData } from '@reducers/user/model';
-
 
 export const sendBTC = (btcAddress: string, btcAmount: number ) => {
   return (dispatch: Dispatch) => {
@@ -35,13 +33,9 @@ export const sendBTC = (btcAddress: string, btcAmount: number ) => {
     
     const duIndex = getUserIndexByAddress(btcAddress, users, loggedUser?.userId);
     if (duIndex) {
-      console.log('hay duIndex')
-      console.log(duIndex)
 
       // Update movements
-      movement.destinationUserId = users[duIndex].userId;
-
-      
+      movement.destinationUserId = users[duIndex].userId;      
       
       // update destination user balance
       users[duIndex].btcBalance = users[duIndex].btcBalance + btcAmount;
@@ -62,7 +56,6 @@ export const sendBTC = (btcAddress: string, btcAmount: number ) => {
         movements.push(movement);
 
         dispatch({type: CREATE_MOVEMENT_FAIL, payload: {movements, error: 'Unexpected error'}});
-        // fail(dispatch, {message: 'Unexpected error'}, 'sendBTC', CREATE_MOVEMENT_FAIL);
       }
     }
     else {
@@ -70,7 +63,6 @@ export const sendBTC = (btcAddress: string, btcAmount: number ) => {
       movements.push(movement);
 
       dispatch({type: CREATE_MOVEMENT_FAIL, payload: {movements, error: 'Invalid or non-existent destination address'}});
-      // fail(dispatch, {message: 'Non-existent destination address'}, 'sendBTC', CREATE_MOVEMENT_FAIL);
     }
   };
 };

@@ -1,5 +1,3 @@
-
-
 export type UserData = {
   mail: string;
   password: string;
@@ -24,5 +22,3 @@ export let users: UserData[] = [
     userId: 1
   },
 ];
-
-

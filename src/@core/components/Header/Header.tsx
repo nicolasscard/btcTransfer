@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import useConfigTheme from '@hooks/useConfigTheme';
 import useStyles from './styles';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface Props { 
   title: string,
@@ -12,7 +13,6 @@ interface Props {
 const Header: React.FC<Props> = (props) => {
   const { configTheme } = useConfigTheme();
   const styles = useStyles(configTheme);
-
 
   return (
    <View style={props.back ? styles.containerback : styles.container}>

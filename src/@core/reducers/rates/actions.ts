@@ -7,11 +7,9 @@ import {
   GET_USD_PRICE_SUCCESS,
   GET_USD_PRICE_FAIL,
   GET_FASTER_FEE_SUCCESS,
-  GET_FASTER_FEE_FAIL,
 } from './types';
 
 const ratesUrl = 'https://ripio.com/api/v1/rates/';
-const feesUrl = 'https://bitcoinfees.earn.com/api/v1/fees/recommended';
 const usdCotizationsUrl = 'https://api.bluelytics.com.ar/v2/latest';
 
 export const getBTCprice = () => {
@@ -39,22 +37,10 @@ export const getFasterFee = () => {
 
     const fee = getRandomFee();
     dispatch({ type: GET_FASTER_FEE_SUCCESS, payload: fee });
-    // fetch(feesUrl)
-    //   .then(response => response.json()).then((data) => {
-    //     if (data) {
-    //       dispatch({ type: GET_FASTER_FEE_SUCCESS, payload: data.fastestFee });
-    //     }
-    //     else {
-    //       fail(dispatch, {message: 'Unexpected error'}, 'getFasterFee', GET_FASTER_FEE_FAIL);
-    //     };
-    //   })
-    //   .catch((err) => {
-    //     fail(dispatch, {message: err.message}, 'getFasterFee', GET_FASTER_FEE_FAIL);
-    //   });
   };
 };
 
-const getRandomFee= () => {
+const getRandomFee = () => {
   return (Math.trunc(Math.random() * 10) * 0.00001) + 0.0001;
 }
 
@@ -76,8 +62,6 @@ export const getUSDprice = () => {
       });
   };
 };
-
-
 
 export const fail = (dispatch: any, error: any, method: string, type: string) => {
   console.log('Error in ' + method + ': ', error);

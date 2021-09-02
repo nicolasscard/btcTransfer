@@ -1,21 +1,21 @@
 import React from 'react';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { Login, NewMovement, Splash, MovementDetail } from '@screens/index';
+
 import TabsNavigation from './tabs.navigation';
 import {Movement} from '@reducers/movement/model';
+import { Login, NewMovement, Splash, MovementDetail } from '@screens/index';
 
 /**
- * Specifying undefined means that the route doesn't have params. 
- * A union type with undefined (e.g. SomeType | undefined) means that params are optional.
+ * Specifying route params. 
  */
  export type RootStackParamList = {
   Login: undefined
   Tabs: undefined
-  Home: undefined
+  MyBalance: undefined
   Movements: undefined
   NewMovement: undefined
-  MovementDetail: {movement: Movement}
+  MovementDetail: {movementId: number}
   Splash: undefined
 };
 
@@ -29,24 +29,18 @@ export type Props = {
 };
 
 function StackNavigation() {
-
   return (
     <Stack.Navigator
       initialRouteName={'Splash'}
-      screenOptions={({ navigation, route }) => ({
-        headerShown: false
-      })}
+      screenOptions={() => ({ headerShown: false })}
     >
       <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />     
       <Stack.Screen name="Tabs" component={TabsNavigation} />
       <Stack.Screen name="NewMovement" component={NewMovement} />
       <Stack.Screen name="Splash" component={Splash} />     
       <Stack.Screen name="MovementDetail" component={MovementDetail} />     
-
     </Stack.Navigator>
   );
 }
-
-
 
 export default StackNavigation;

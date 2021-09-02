@@ -1,18 +1,15 @@
 import React from 'react';
 import { Text, View, KeyboardTypeOptions } from 'react-native';
-import { Field, reduxForm, InjectedFormProps } from 'redux-form';
+import { Field, reduxForm, InjectedFormProps, submit, isInvalid, isSubmitting } from 'redux-form';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Button } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
 
 import useConfigTheme from '@hooks/useConfigTheme';
 import useStyles from './styles';
 
 import { TextInput } from '@components/index';
 import { UserData } from '@reducers/user/model';
-import { ScrollView } from 'react-native-gesture-handler';
-
-import { Button } from 'react-native-paper';
-import { submit, isInvalid, isSubmitting } from 'redux-form';
-
-import { useDispatch, useSelector } from 'react-redux';
 
 type RenderFieldProps = {
   input: Field,
@@ -100,7 +97,7 @@ const MovementForm: React.FC<InjectedFormProps<{}, CustomProps> & CustomProps> =
             placeholder={'BTC Amount to send'}
             keyboardType={'numeric'}
           />
-          <Text style={{ paddingLeft: 15, paddingTop: 5, fontSize: 15 }}>
+          <Text style={{ paddingLeft: configTheme.margin, paddingTop: 5, fontSize: 15 }}>
             {`Network commission: ${props.fasterFee}`}
           </Text>       
           <Button 

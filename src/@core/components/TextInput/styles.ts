@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-
 import { ConfigEntity } from '@hooks/useConfigTheme';
 
 export default (props: ConfigEntity) => {
@@ -9,11 +8,5 @@ export default (props: ConfigEntity) => {
         backgroundColor: 'transparent', 
         fontWeight: 'bold',
     },
-    image: {
-      resizeMode: 'contain',
-      width: 20, 
-      height: 20,
-      marginRight: 5,
-    }
   })
 };

@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, ImageSourcePropType, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {Header} from '@components/index';
 import { connect, ConnectedProps } from 'react-redux';
+import { Props as StackComponentProps} from '@navigation/stack.navigation';
+import { Button } from 'react-native-paper';
+
+import {Header} from '@components/index';
 import { logout } from '@reducers/user/actions';
 import { getBTCprice, getUSDprice } from '@reducers/rates/actions';
 
-import { Props as StackComponentProps} from '@navigation/stack.navigation';
-// import { Props as TabComponentProps} from '@navigation/tabs.navigation';
-
-import { Button } from 'react-native-paper';
 import useConfigTheme from '@hooks/useConfigTheme';
 import useStyles from './styles';
-import { UserData } from '@reducers/user/model';
 
 const btcCoin: ImageSourcePropType = require("@assets/media/btcCoin.png");
 
@@ -37,33 +35,16 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type reduxProps = ConnectedProps<typeof connector>;
-// type Props = reduxProps & StackComponentProps & TabComponentProps;
 type Props = reduxProps & StackComponentProps;
 
-const Home: React.FC<Props> = (props) => {
+const MyBalance: React.FC<Props> = (props) => {
   const { configTheme } = useConfigTheme();
   const styles = useStyles(configTheme);
-
-  
 
   useEffect(() => { 
     props.getBTCprice();
     props.getUSDprice();
   }, []);  
-
-  useEffect(() => { 
-    console.log('home >> useEffect')
-    console.log(props.loggedUser?.btcBalance)
-    // console.log(loggedUser?.btcBalance)
-
-    // const unsubscribe = props.navigation.addListener('focus', () => {
-    //   console.log('focussssss');
-    //   console.log(props.loggedUser?.btcBalance)
-    //   setLoggedUser(props.loggedUser);
-    // });
-    // return unsubscribe;
-    
-  }, [props.loggedUser]);  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -74,7 +55,7 @@ const Home: React.FC<Props> = (props) => {
           style={styles.image}
         />
         <View style={{ 
-          flex: 1, justifyContent: 'center', paddingLeft: 20 }}>
+          flex: 1, justifyContent: 'center', paddingLeft: configTheme.margin }}>
       
           {props.loggedUser != null
             ? (<>
@@ -89,8 +70,6 @@ const Home: React.FC<Props> = (props) => {
                 Loading...  
               </Text>
           }
-          
-
         </View>
       </View>
 
@@ -109,7 +88,6 @@ const Home: React.FC<Props> = (props) => {
         }}
         style={styles.buttonWithBorder}
         labelStyle={{ fontSize: 12, color: configTheme.textButtonSecondary }}
-        disabled={false}
       >
         Log Out
       </Button>
@@ -118,4 +96,4 @@ const Home: React.FC<Props> = (props) => {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(MyBalance);
