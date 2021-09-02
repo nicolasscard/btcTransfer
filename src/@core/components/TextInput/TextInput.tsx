@@ -32,7 +32,7 @@ const TextInput: React.FC<Props> = (Props) => {
         autoCapitalize={'none'}
         style={styles.textInput}
         keyboardType={Props.keyboardType}
-        secureTextEntry={hidePassword}
+        secureTextEntry={Props.showPassword && hidePassword}
         theme={{ 
           colors: { 
             text: configTheme.textInputText, 
