@@ -12,7 +12,7 @@ import LoginForm from './LoginForm';
 import useConfigTheme from '@hooks/useConfigTheme';
 import useStyles from './styles';
 
-const welcome: ImageSourcePropType = require("@assets/media/welcome.png");
+const welcome: ImageSourcePropType = require("@assets/media/welcome2.png");
 
 const mapStateToProps = (state: any) => {
   return {

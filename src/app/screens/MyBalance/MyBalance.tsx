@@ -12,7 +12,7 @@ import { getBTCprice, getUSDprice } from '@reducers/rates/actions';
 import useConfigTheme from '@hooks/useConfigTheme';
 import useStyles from './styles';
 
-const btcCoin: ImageSourcePropType = require("@assets/media/btcCoin.png");
+const btcCoin: ImageSourcePropType = require("@assets/media/btcCoin2.png");
 
 const mapStateToProps = (state: any) => {
   return {

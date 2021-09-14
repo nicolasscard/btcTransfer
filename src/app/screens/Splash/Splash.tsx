@@ -7,7 +7,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import useConfigTheme from '@hooks/useConfigTheme';
 import useStyles from './styles';
 
-const splashImg: ImageSourcePropType = require("@assets/media/splash.png");
+const splashImg: ImageSourcePropType = require("@assets/media/splash2.png");
 
 const mapStateToProps = (state: any) => {
   return {
